@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RMV smart Calculator</title>
+    <style>
+        html, body { font: 20px Arial, Helvetica, sans-serif; }
+        form { max-width: 640px; margin: 0 auto; }
+        label { display: block; margin-bottom: 1em; }
+        label input { float: right; font-size: 20px; text-align: right; }
+        label input:before { content: ' '; display: table; clear: both; }
+        .best { color: green; }
+    </style>
+</head>
+<body>
+
+<h1>RMV smart Calculator</h1>
+
+<p>
+    Fragen zu deinem aktuellen Fahrverhalten:
+</p>
+
+<form>
+    <label>
+        Normalpreis für deine typische Strecke
+        <input type="text" name="normal" value="2,75">
+    </label>
+    <label>
+        Smart Flex Preis für deine typische Strecke
+        <input type="text" name="flex" value="3,10">
+    </label>
+    <label>
+        Wie viele Fahrten planst du im kommendenden Monat (einfache Strecke)
+        <input type="number" name="rides" value="5" min="1" max="31">
+    </label>
+</form>
+
+<div id="result"></div>
+
+<script>
+    var form = document.querySelector('form')
+    var result = document.getElementById('result')
+
+    function discount(price, rides) {
+      return price * rides
+    }
+
+    function text2Currency(text) {
+      return Math.floor(parseFloat(text.replace(',', '.')) * 100)
+    }
+
+    var formatter = new Intl.NumberFormat('de-DE', {
+      style: 'currency',
+      currency: 'EUR',
+    })
+
+    function currency2text(currency) {
+      return formatter.format(currency / 100)
+    }
+
+    function calculate() {
+      var rides = form.elements.rides.value
+      var prices = {
+        [text2Currency(form.elements.normal.value) * rides]: 'Normaltarif',
+        [discount(text2Currency(form.elements.flex.value), rides)]: 'Smart Flex',
+        [discount(text2Currency(form.elements.flex.value) / 2, rides) + 1000]: 'Smart 50'
+      }
+
+      var min = Math.min(...Object.keys(prices).map(parseFloat))
+      result.innerHTML = '<ul>' + Object.keys(prices)
+          .map(function(rate) {
+            var rating = +rate === min ? 'best' : ''
+            return `<li class="${rating}"><span>${prices[rate]}</span>: <span class="rate">${currency2text(rate)}</span></li>`
+          })
+          .join('\n')
+        + '</ul>'
+    }
+
+    form.addEventListener('keyup', calculate)
+</script>
+
+</body>
+</html>
