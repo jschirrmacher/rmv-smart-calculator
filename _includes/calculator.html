@@ -33,8 +33,16 @@
     var form = document.querySelector('form')
     var result = document.getElementById('result')
 
-    function discount(price, rides) {
-      return price * rides
+    function discount(currentSum) {
+      return Math.min(Math.floor(currentSum / 2000) * 0.2, 1)
+    }
+
+    function discountedPrice(price, rides) {
+      var sum = 0
+      while(rides--) {
+        sum += price * (1 - discount(sum))
+      }
+      return sum
     }
 
     function text2Currency(text) {
@@ -54,8 +62,8 @@
       var rides = form.elements.rides.value
       var prices = {
         [text2Currency(form.elements.normal.value) * rides]: 'Normaltarif',
-        [discount(text2Currency(form.elements.flex.value), rides)]: 'Smart Flex',
-        [discount(text2Currency(form.elements.flex.value) / 2, rides) + 1000]: 'Smart 50'
+        [discountedPrice(text2Currency(form.elements.flex.value), rides)]: 'Smart Flex',
+        [discountedPrice(text2Currency(form.elements.flex.value) / 2, rides) + 1000]: 'Smart 50'
       }
 
       var min = Math.min(...Object.keys(prices).map(parseFloat))
