@@ -13,6 +13,6 @@ Monat für Monat, da ich in den Wintermonaten weniger oft Rad fahre als im Somme
 
 Daher habe ich dieses kleine Programm geschrieben, mit dem ich besser abschätzen kann, welcher Tarif wahrscheinlich
 am besten zu meiner aktuellen Fahrsituation passt. Natürlich dürft ihr es auch sehr gern benutzen und ich würde mich
-freuen über Anregungen, Fehlermeldungen oder Beiträge!
+freuen über [Anregungen, Fehlermeldungen oder Beiträge](https://github.com/jschirrmacher/rmv-smart-calculator/issues)!
 
 {% include calculator.html %}
