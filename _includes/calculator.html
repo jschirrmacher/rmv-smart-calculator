@@ -63,7 +63,7 @@
       var prices = {
         [text2Currency(form.elements.normal.value) * rides]: 'Normaltarif',
         [discountedPrice(text2Currency(form.elements.flex.value), rides)]: 'Smart Flex',
-        [discountedPrice(text2Currency(form.elements.flex.value) / 2, rides) + 1000]: 'Smart 50'
+        [text2Currency(form.elements.flex.value) / 2 + 1000]: 'Smart 50'
       }
 
       var min = Math.min(...Object.keys(prices).map(parseFloat))
